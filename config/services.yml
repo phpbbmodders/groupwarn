@@ -1,0 +1,12 @@
+services:
+    phpbbmodders.groupwarn.listener:
+        class: phpbbmodders\groupwarn\event\main_listener
+        arguments:
+            - '@dbal.conn'
+            - '@language'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%core.table_prefix%'
+        tags:
+            - { name: event.listener }
