@@ -42,13 +42,13 @@ class ext extends \phpbb\extension\base
 	}
 
 	/**
-	 * Require phpBB 3.3.16
+	 * Require phpBB 3.3.17
 	 *
 	 * @return bool
 	 */
 	protected function check_phpbb_version()
 	{
-		return phpbb_version_compare(PHPBB_VERSION, '3.3.16', '>=');
+		return phpbb_version_compare(PHPBB_VERSION, '3.3.17', '>=');
 	}
 
 	/**
@@ -58,6 +58,6 @@ class ext extends \phpbb\extension\base
 	 */
 	protected function check_php_version()
 	{
-		return PHP_VERSION_ID >= 80100;
+		return PHP_VERSION_ID >= 80200;
 	}
 }
