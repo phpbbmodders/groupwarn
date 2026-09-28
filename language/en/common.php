@@ -38,5 +38,5 @@ $lang = array_merge($lang, [
 	'GROUP_WARN'			=> 'Group warn',
 	'GROUP_WARN_EXPLAIN'	=> 'Members in this group can be warned. Founders can always warn.',
 
-	'CANNOT_WARN_USER_GROUP'	=> 'You cannot warn this user. This user\'s group memebership prohibits warnings.',
+	'CANNOT_WARN_USER_GROUP'	=> 'You cannot warn this user. This user\'s group membership prohibits warnings.',
 ]);
