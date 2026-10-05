@@ -15,7 +15,7 @@ Lets administrators choose, per group, whether that group's members can be warne
 
 ## Requirements
 
-- phpBB 3.3.17 or later
+- phpBB 3.3.19 or later
 - PHP 8.2 or later
 
 ## Installation

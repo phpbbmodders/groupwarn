@@ -35,5 +35,5 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
-	'GROUPWARN_NOT_ENABLEABLE'	=> 'Group warn could not be enabled. The minimum requirements of phpBB 3.3.16 and/or PHP 8.1.0 were not satisfied.',
+	'GROUPWARN_NOT_ENABLEABLE'	=> 'Group warn could not be enabled. The minimum requirements of phpBB 3.3.19 and/or PHP 8.2.0 were not satisfied.',
 ]);
