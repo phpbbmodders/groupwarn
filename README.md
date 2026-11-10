@@ -13,10 +13,16 @@ Lets administrators choose, per group, whether that group's members can be warne
 
 **Note:** no group is ticked after installation, so nobody can be warned (except by founders) until you tick the groups whose members may be warned, usually at least **Registered users**.
 
+## Screenshots
+
+<a href="docs/images/screenshots/groupwarn-acp-group-setting.png"><img src="docs/images/screenshots/groupwarn-acp-group-setting.png" alt="The Group warn checkbox, ticked, among the group-wide options of the Registered users group" width="440" height="119"></a>
+
+More in [the screenshot gallery](docs/images/screenshots/README.md).
+
 ## Requirements
 
-- phpBB 3.3.19 or later
-- PHP 8.2 or later
+- phpBB 3.3.19 or later, including phpBB 4.0 (tested on its 4.0.0-a3 development version)
+- PHP 8.1 or later (phpBB 4.0 itself needs PHP 8.2 or later)
 
 ## Installation
 

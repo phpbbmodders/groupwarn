@@ -38,6 +38,9 @@ class main_listener implements EventSubscriberInterface
 	/** @var string */
 	protected $table_prefix;
 
+	/** @var bool[] Whether each user already looked up may not be warned, keyed by user ID */
+	protected $cannot_warn = [];
+
 	/**
 	 * Constructor
 	 *
@@ -129,9 +132,7 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function mcp_warn_before($event)
 	{
-		$group_warn = $this->query_warn_groups();
-
-		if (in_array($event['user_row']['user_id'], $group_warn) && $this->user->data['user_type'] != USER_FOUNDER)
+		if ($this->user_cannot_be_warned((int) $event['user_row']['user_id']))
 		{
 			trigger_error($this->language->lang('CANNOT_WARN_USER_GROUP'));
 		}
@@ -142,54 +143,54 @@ class main_listener implements EventSubscriberInterface
 	 */
 	public function memberlist_view_profile($event)
 	{
-		$group_warn = $this->query_warn_groups();
-
-		if (in_array($event['member']['user_id'], $group_warn) && $this->user->data['user_type'] != USER_FOUNDER)
+		if ($this->user_cannot_be_warned((int) $event['member']['user_id']))
 		{
 			$event['warn_user_enabled'] = false;
 		}
 	}
 
+	/**
+	 * Hide the warn button on posts by users who may not be warned
+	 */
 	public function viewtopic_modify_post_action_conditions($event)
 	{
-		$group_warn = $this->query_warn_groups();
-
-		if (in_array($event['row']['user_id'], $group_warn) && $this->user->data['user_type'] != USER_FOUNDER)
+		if ($this->user_cannot_be_warned((int) $event['row']['user_id']))
 		{
 			$event['warn_allowed'] = false;
 		}
 	}
 
-	private function query_warn_groups()
+	/**
+	 * Whether the current user may not warn a user because of the user's groups
+	 *
+	 * A user can be warned only when every group they are a full member of
+	 * (pending memberships do not count) has Group warn ticked. Founders can
+	 * always warn. Each user is looked up once per request, because the
+	 * viewtopic check runs for every post on the page.
+	 *
+	 * @param int $user_id The user who would be warned
+	 * @return bool True if the warning must be refused
+	 */
+	protected function user_cannot_be_warned(int $user_id): bool
 	{
-		$sql_array = [
-			'SELECT'	=> 'g.group_id, g.group_warn, ug.user_id, ug.group_id',
-
-			'FROM'		=> [
-				$this->table_prefix . 'groups'	=> 'g',
-			],
-
-			'LEFT_JOIN' => [
-				[
-					'FROM'	=> [
-						$this->table_prefix . 'user_group'	=> 'ug'
-					],
-					'ON'	=> 'g.group_id = ug.group_id'
-				],
-			],
-
-			'WHERE'		=> 'g.group_warn = 0'
-		];
-
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query($sql);
-		$group_warn = [];
-		while ($row = $this->db->sql_fetchrow($result))
+		if ((int) $this->user->data['user_type'] === USER_FOUNDER)
 		{
-			$group_warn[] = (int) $row['user_id'];
+			return false;
 		}
-		$this->db->sql_freeresult($result);
 
-		return $group_warn;
+		if (!isset($this->cannot_warn[$user_id]))
+		{
+			$sql = 'SELECT ug.group_id
+				FROM ' . $this->table_prefix . 'user_group ug, ' . $this->table_prefix . 'groups g
+				WHERE ug.user_id = ' . $user_id . '
+					AND ug.user_pending = 0
+					AND g.group_id = ug.group_id
+					AND g.group_warn = 0';
+			$result = $this->db->sql_query_limit($sql, 1);
+			$this->cannot_warn[$user_id] = (bool) $this->db->sql_fetchrow($result);
+			$this->db->sql_freeresult($result);
+		}
+
+		return $this->cannot_warn[$user_id];
 	}
 }
