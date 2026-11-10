@@ -1,7 +1,7 @@
 {
     "name": "phpbbmodders/groupwarn",
     "type": "phpbb-extension",
-    "description": "Allows an administrator to enable/disable warning users in certain groups.",
+    "description": "Lets administrators choose, per group, whether that group's members can be warned.",
     "homepage": "https://www.phpbbmodders.com/",
     "version": "1.0.0-dev",
     "time": "2026-03-05",
@@ -28,7 +28,7 @@
     "extra": {
         "display-name": "Group Warn",
         "soft-require": {
-            "phpbb/phpbb": ">=3.3.19"
+            "phpbb/phpbb": ">=3.3.19,<4.1.0@dev"
         }
     }
 }

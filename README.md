@@ -15,8 +15,8 @@ Lets administrators choose, per group, whether that group's members can be warne
 
 ## Requirements
 
-- phpBB 3.3.19 or later
-- PHP 8.2 or later
+- phpBB 3.3.19 or later, including phpBB 4.0 (tested on its 4.0.0-a3 development version)
+- PHP 8.1 or later (phpBB 4.0 itself needs PHP 8.2 or later)
 
 ## Installation
 
